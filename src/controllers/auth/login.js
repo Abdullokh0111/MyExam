@@ -1,16 +1,30 @@
 const jwt = require("jsonwebtoken");
 const model = require("@models/user.model");
-const bcrypt = require("bcrypt");
-
+const bcrypt = require("bcryptjs");
 
 module.exports = async (req, res, next) => {
   try {
     const { username, password } = req.body;
 
+    console.log("Полученный username:", username);
+    console.log("Полученный password:", password);
+
+    if (!password) {
+      return res.status(400).json({ error: "Пароль обязателен" });
+    }
+
     const user = await model.findOne({ username });
 
     if (!user) {
       return res.status(401).json({ error: "Invalid username or password" });
+    }
+
+    console.log("Пароль из БД (хеш):", user.password);
+
+    if (!user.password) {
+      return res
+        .status(500)
+        .json({ error: "Ошибка сервера: нет пароля у пользователя" });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
@@ -32,9 +46,8 @@ module.exports = async (req, res, next) => {
 
     console.log("Generated refreshToken:", refreshToken);
 
-    // ПРОБЛЕМА: refreshToken может не сохраняться!
     user.refreshToken = refreshToken;
-    await user.save(); // Тут сохраняем, но проверь, что model поддерживает это поле
+    await user.save();
 
     console.log("Saved refreshToken in DB:", user.refreshToken);
 

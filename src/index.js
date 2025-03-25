@@ -15,6 +15,7 @@ connectDb();
 app.use(express.json());
 app.use(cookieParser());
 app.use(mongana("dev"));
+app.use(express.urlencoded({ extended: true }));
 
 initRoutes(app);
 
