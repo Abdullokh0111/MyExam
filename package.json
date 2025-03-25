@@ -1,15 +1,24 @@
 {
   "name": "exam",
   "version": "1.0.0",
-  "main": "test.js",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/index.js"
+  },
+  "_moduleAliases": {
+    "@config": "./config",
+    "@controllers": "./src/controllers",
+    "@middlewares": "./src/middlewares",
+    "@models": "./src/models",
+    "@routes": "./src/routes",
+    "@utils": "./src/utils"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "bcryptjs": "^3.0.2",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",

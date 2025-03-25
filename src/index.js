@@ -5,8 +5,8 @@ const mongana = require("morgan");
 const express = require("express");
 const cookieParser = require("cookie-parser");
 
-const connectDb = require("@config/db.js");
-const { default: initRoutes } = require("@routes/index.route");
+const connectDb = require("../config/db");
+const { default: initRoutes } = require("./routes/index.route");
 
 const app = express();
 
