@@ -8,8 +8,10 @@ const generateRandomFilename = (originalname) => {
   const randomString = Math.random().toString(36).substring(2, 12); // Генерируем случайную строку
   const ext = path.extname(originalname).toLowerCase(); // Получаем расширение
 
-  // Если расширение не .png или .img, ставим .png по умолчанию
-  return `${randomString}${ext === ".img" || ext === ".png" ? ext : ".png"}`;
+  // Если расширение не .png, .img или .jpg, ставим .png по умолчанию
+  return `${randomString}${
+    [".png", ".img", ".jpg"].includes(ext) ? ext : ".png"
+  }`;
 };
 
 // Настройка хранилища
@@ -26,11 +28,11 @@ const upload = multer({
   storage,
   limits: { fileSize: 5 * 1024 * 1024 }, // Ограничение 5MB
   fileFilter: (req, file, cb) => {
-    const allowedMimeTypes = ["image/png", "image/img"];
+    const allowedMimeTypes = ["image/png", "image/img", "image/jpeg"];
     if (allowedMimeTypes.includes(file.mimetype)) {
       cb(null, true);
     } else {
-      cb(new Error("Only .png and .img files are allowed!"));
+      cb(new Error("Only .png, .img, and .jpg files are allowed!"));
     }
   },
 });
