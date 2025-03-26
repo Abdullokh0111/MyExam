@@ -1,20 +1,19 @@
 const multer = require("multer");
 const router = require("express").Router();
 const addPost = require("@controllers/posts/addPost");
+const getPosts = require("@controllers/posts/getPosts");
+const updAndDel = require("@controllers/posts/updAndDel");
 const path = require("path");
 
-// Функция генерации случайного имени файла
 const generateRandomFilename = (originalname) => {
-  const randomString = Math.random().toString(36).substring(2, 12); // Генерируем случайную строку
-  const ext = path.extname(originalname).toLowerCase(); // Получаем расширение
+  const randomString = Math.random().toString(36).substring(2, 12);
+  const ext = path.extname(originalname).toLowerCase();
 
-  // Если расширение не .png, .img или .jpg, ставим .png по умолчанию
   return `${randomString}${
     [".png", ".img", ".jpg"].includes(ext) ? ext : ".png"
   }`;
 };
 
-// Настройка хранилища
 const storage = multer.diskStorage({
   destination: "uploads",
   filename: (req, file, cb) => {
@@ -23,10 +22,9 @@ const storage = multer.diskStorage({
   },
 });
 
-// Настройка multer (разрешаем загружать только изображения)
 const upload = multer({
   storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // Ограничение 5MB
+  limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     const allowedMimeTypes = ["image/png", "image/img", "image/jpeg"];
     if (allowedMimeTypes.includes(file.mimetype)) {
@@ -37,7 +35,11 @@ const upload = multer({
   },
 });
 
-// Роут с загрузкой ОДНОГО файла
-router.post("/addPost", upload.single("image"), addPost);
+router
+  .post("/addPost", upload.single("image"), addPost)
+  .get("/posts", getPosts.getPosts)
+  .get("/posts/:id", getPosts.getPostById)
+  .patch("/posts/:id", updAndDel.updatePost)
+  .delete("/posts/:id", updAndDel.deletePost);
 
 module.exports = router;
