@@ -1,0 +1,1 @@
+Blog API – bu foydalanuvchilar ro‘yxatdan o‘tishi va tizimga kirishi mumkin bo‘lgan blog platformasidir. Foydalanuvchilar yangi postlar qo‘shishi, ularni tahrirlashi va o‘chirishi mumkin. Loyiha autentifikatsiya uchun JWT tokenlaridan foydalanadi va Express.js bilan ishlab chiqilgan.
